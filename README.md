@@ -1,7 +1,7 @@
 # csc413-SecondGame
 
-## Student Name  :
-## Student ID    :
+## Student Name  : Greesan Gurumurthy
+## Student ID    : 918737305
 
 
 ## src folder is to be used to store source code only.
