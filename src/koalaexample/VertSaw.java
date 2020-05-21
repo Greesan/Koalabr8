@@ -1,4 +1,5 @@
-import java.awt.*;
+package koalaexample;
+
 import java.awt.image.BufferedImage;
 
 public class VertSaw extends Sawblade {

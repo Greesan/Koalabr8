@@ -1,3 +1,5 @@
+package koalaexample;
+
 import java.awt.image.BufferedImage;
 
 public class Exit extends Stationary {

@@ -1,3 +1,5 @@
+package koalaexample;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.Buffer;
@@ -29,9 +31,9 @@ public class KoalaExample extends JPanel{
     public ArrayList<TNT> tnts;
     private ArrayList<Sawblade> saws;
     private ArrayList<Exit> exits;
-    private Switch redswitchy;
-    private Switch blueswitchy;
-    private Switch yellowswitchy;
+    private Detonator det;
+    private Detonator blueswitchy;
+    private Detonator yellowswitchy;
     private Background bg;
     private Message message1;
     private Message message2;
@@ -64,8 +66,8 @@ public class KoalaExample extends JPanel{
                     koalaExample.koalas.get(0).collideCheck(koalaExample.exits);
                     koalaExample.koalas.get(1).collideCheck(koalaExample.exits);
                 }
-                koalaExample.koalas.get(0).collideCheck(koalaExample.redswitchy,koalaExample.tnts);
-                koalaExample.koalas.get(1).collideCheck(koalaExample.redswitchy,koalaExample.tnts);
+                koalaExample.koalas.get(0).collideCheck(koalaExample.det,koalaExample.tnts);
+                koalaExample.koalas.get(1).collideCheck(koalaExample.det,koalaExample.tnts);
                 if(!koalaExample.exits.get(0).getVisible() && !koalaExample.exits.get(1).getVisible())
                     koalaExample.message2.setVisible(true);
                 else if(((!koalaExample.koalas.get(0).getVisible() || (!koalaExample.koalas.get(1).getVisible())) && (koalaExample.exits.get(0).getVisible() && koalaExample.exits.get(1).getVisible())
@@ -112,12 +114,12 @@ public class KoalaExample extends JPanel{
             koalaDownImage = read(KoalaExample.class.getClassLoader().getResource("Koala_down.png"));
             backgroundImage = read(KoalaExample.class.getClassLoader().getResource("Background.jpg"));
             wall1Image = read(KoalaExample.class.getClassLoader().getResource("Wall1.jpg"));
-            vertsawImage = read(KoalaExample.class.getClassLoader().getResource("saw_vertical.png"));
-            horizsawImage = read(KoalaExample.class.getClassLoader().getResource("saw_horizontal.png"));
-            tntImage = read(KoalaExample.class.getClassLoader().getResource("tnt.png"));
+            vertsawImage = read(KoalaExample.class.getClassLoader().getResource("Saw_vertical.png"));
+            horizsawImage = read(KoalaExample.class.getClassLoader().getResource("Saw_horizontal.png"));
+            tntImage = read(KoalaExample.class.getClassLoader().getResource("TNT.png"));
             exitImage = read(KoalaExample.class.getClassLoader().getResource("Exit1.png"));
-            redswitchImage = read(KoalaExample.class.getClassLoader().getResource("detonator.png"));
-            winImage = read(KoalaExample.class.getClassLoader().getResource("congratulation.gif"));
+            redswitchImage = read(KoalaExample.class.getClassLoader().getResource("Detonator.png"));
+            winImage = read(KoalaExample.class.getClassLoader().getResource("Congratulation.gif"));
             loseImage = read(KoalaExample.class.getClassLoader().getResource("Restart.png"));
             koal8Image = read(KoalaExample.class.getClassLoader().getResource("Title.jpg"));
 
@@ -150,7 +152,7 @@ public class KoalaExample extends JPanel{
                             tnts.add(new TNT(j*wall1Image.getWidth(),i*wall1Image.getHeight(),true, tntImage));
                             break;
                         case "5":
-                            redswitchy = new Switch(j*wall1Image.getWidth(),i*wall1Image.getHeight(),true, redswitchImage);
+                            det = new Detonator(j*wall1Image.getWidth(),i*wall1Image.getHeight(),true, redswitchImage);
                             break;
                         case "6":
                             saws.add(new HorizSaw(j*wall1Image.getWidth()-30,i*wall1Image.getHeight(),3,1000-100*(i-5),true,true,horizsawImage));
@@ -201,7 +203,7 @@ public class KoalaExample extends JPanel{
         super.paintComponent(g2);
         buffer = world.createGraphics();
         bg.drawImage(buffer);
-        redswitchy.drawImage(buffer);
+        det.drawImage(buffer);
         thewall.forEach(wall -> wall.drawImage(buffer));
         saws.forEach(saw -> saw.drawImage(buffer));
         tnts.forEach(tnt -> tnt.drawImage(buffer));

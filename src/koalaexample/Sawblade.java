@@ -1,4 +1,7 @@
-import java.awt.*;
+package koalaexample;
+
+import koalaexample.Moveable;
+
 import java.awt.image.BufferedImage;
 
 public abstract class Sawblade extends Moveable {

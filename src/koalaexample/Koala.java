@@ -1,5 +1,5 @@
-import java.awt.*;
-import java.awt.geom.AffineTransform;
+package koalaexample;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.Date;
 public class Koala extends Moveable {
     private int v;
     protected BufferedImage koalaStandImage;
+    protected BufferedImage koalaStartImage;
     protected BufferedImage koalaLeftImage;
     protected BufferedImage koalaRightImage;
     protected BufferedImage koalaUpImage;
@@ -15,8 +16,9 @@ public class Koala extends Moveable {
     private boolean DownPressed;
     private boolean RightPressed;
     private boolean LeftPressed;
+
     Date lasttime;
-    Date projtime;
+    Date stuttertime;
     Koala(int x, int y, boolean vis, BufferedImage koalaStandImage, BufferedImage koalaLeftImage,
           BufferedImage koalaRightImage, BufferedImage koalaUpImage, BufferedImage koalaDownImage) {
         super(x,y,vis,koalaStandImage);
@@ -25,6 +27,7 @@ public class Koala extends Moveable {
         this.y = y;
         this.v = 3;
         this.koalaStandImage = koalaStandImage;
+        this.koalaStartImage = koalaStandImage;
         this.koalaLeftImage = koalaLeftImage;
         this.koalaRightImage = koalaRightImage;
         this.koalaUpImage = koalaUpImage;
@@ -64,14 +67,10 @@ public class Koala extends Moveable {
     }
 
 
-
-    public void drawImage() {
-        
-    }
-
     public void update() {
         if(getVisible())
         {
+            stuttertime = new Date();
             if (this.UpPressed) {
                 this.moveUp();
             }
@@ -85,7 +84,15 @@ public class Koala extends Moveable {
             else if (this.RightPressed) {
                 this.moveRight();
             }
+            else
+            {
+                this.resetImage();
+            }
         }
+    }
+    public void resetImage()
+    {
+        image = koalaStartImage;
     }
     public void collideCheck(Object obj)
     {
@@ -131,15 +138,20 @@ public class Koala extends Moveable {
         }
     }
     public void collideCheck(Object obj, ArrayList<TNT> tnts) {
-        if (obj instanceof Switch) {
-            if (((Switch) obj).getHitBox().intersects(hitBox) && (isDownPressed() || isUpPressed() || isLeftPressed() || isRightPressed())
-                    && ((Switch) obj).getVisible()) {
+        if (obj instanceof Detonator) {
+            if (((Detonator) obj).getHitBox().intersects(hitBox) && (isDownPressed() || isUpPressed() || isLeftPressed() || isRightPressed())
+                    && ((Detonator) obj).getVisible()) {
                 tnts.forEach(tnt->tnt.setVisible(false));
             }
         }
     }
     private void moveLeft() {
-        koalaStandImage = koalaLeftImage;
+        if(stuttertime == null || stuttertime.getTime()-20>lasttime.getTime()) {
+            lasttime = stuttertime;
+            image = koalaStandImage;
+        }
+        else
+            image = koalaLeftImage;
         if(x>0){
             this.x -= v;
             hitBox.setLocation(x,y);
@@ -147,7 +159,12 @@ public class Koala extends Moveable {
     }
 
     private void moveRight() {
-        koalaStandImage = koalaRightImage;
+        if(stuttertime == null || stuttertime.getTime()-20>lasttime.getTime()) {
+            lasttime = stuttertime;
+            image = koalaStandImage;
+        }
+        else
+            image = koalaRightImage;
         if(x<1485) {
             this.x += v;
             hitBox.setLocation(x, y);
@@ -155,7 +172,12 @@ public class Koala extends Moveable {
     }
 
     private void moveUp() {
-        koalaStandImage = koalaUpImage;
+        if(stuttertime == null || stuttertime.getTime()-20>lasttime.getTime()) {
+            lasttime = stuttertime;
+            image = koalaStandImage;
+        }
+        else
+            image = koalaUpImage;
         if(y>0) {
             this.y -= v;
             hitBox.setLocation(x,y);
@@ -163,7 +185,12 @@ public class Koala extends Moveable {
     }
 
     private void moveDown() {
-        koalaStandImage = koalaDownImage;
+        if(stuttertime == null || stuttertime.getTime()-20>lasttime.getTime()) {
+            lasttime = stuttertime;
+            image = koalaStandImage;
+         }
+        else
+            image = koalaDownImage;
         if(y<790) {
             this.y += v;
             hitBox.setLocation(x,y);
@@ -201,15 +228,4 @@ public class Koala extends Moveable {
     public String toString() {
         return "x=" + x + ", y=" + y;
     }
-
-    /*
-    public void tankCollision(ArrayList<TNT> projs)
-    {
-        for(TNT i:projs)
-        {
-            if(i.getX() > x && i.getX() < x + 50 && i.getY() > y && i.getY() < y + 50)
-                vis = false;
-        }
-    }
-    */
 }

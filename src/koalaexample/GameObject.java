@@ -1,3 +1,5 @@
+package koalaexample;
+
 import java.awt.image.BufferedImage;
 import java.awt.*;
 
@@ -42,9 +44,5 @@ public abstract class GameObject{
     public Rectangle getHitBox()
     {
         return hitBox.getBounds();
-    }
-    public void update()
-    {
-        hitBox.setLocation(x,y);
     }
 }

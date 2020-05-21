@@ -1,3 +1,7 @@
+package koalaexample;
+
+import koalaexample.Koala;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
